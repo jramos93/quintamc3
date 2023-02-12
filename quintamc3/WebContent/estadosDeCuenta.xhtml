@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+
+<h:head>
+	<h:outputStylesheet name="primeicons/primeicons.css"
+		library="primefaces" />
+</h:head>
+
+<h:body>
+
+	<style type="text/css">
+* {
+	font-size: 13px;
+}
+
+.col-small {
+	width: 65px;
+	text-align: center;
+}
+</style>
+	<h:form id="frm">
+		<p:menubar>
+
+			<p:submenu label="Administracion">
+				<p:menuitem value="Lotes" icon="pi pi-file"
+					action="gestionlotes.xhtml" ajax="false" >
+				</p:menuitem>
+			</p:submenu>
+			
+			<p:menuitem value="Estados de cuenta" icon="pi pi-file"
+				action="estadosDeCuenta.xhtml" ajax="false" />
+
+			<p:menuitem value="Gestion de usuarios" icon="pi pi-users"
+				action="usuarios.xhtml" ajax="false" />
+
+			<p:menuitem value="Carga de data" icon="pi pi-file-o" />
+			<f:facet name="options">
+
+				<p:commandButton type="button" value="Cerrar sesion"
+					icon="pi pi-home" />
+			</f:facet>
+		</p:menubar>
+
+		<p:panel>
+
+			<br />
+
+			<h:outputText value="ESTADO DE CUENTA"
+				style="font-weight:bold; font-size: 18px;"></h:outputText>
+
+			<p:growl id="msj" life="9000" showDetail="true">
+				<p:autoUpdate></p:autoUpdate>
+			</p:growl>
+
+			<br />
+			<br />
+
+			<h:outputText value="TOTAL DE CREDITOS: "></h:outputText>
+			<p:spacer width="10" />
+			<h:outputText value="25" style="font-weight:bold; font-size:18px;"></h:outputText>
+
+			<br />
+			<br />
+
+			<p:dataTable emptyMessage="No hay creditos seleccionados">
+				<p:column headerText="No."></p:column>
+				<p:column headerText="Credito"></p:column>
+				<p:column headerText="Monto credito"></p:column>
+				<p:column headerText="Saldo a la fecha"></p:column>
+				<p:column headerText="Detalle"></p:column>
+			</p:dataTable>
+
+			<br />
+			<br />
+
+
+		</p:panel>
+
+	</h:form>
+
+</h:body>
+
+</html>

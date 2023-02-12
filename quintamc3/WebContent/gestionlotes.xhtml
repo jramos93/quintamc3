@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+
+<h:head>
+	<h:outputStylesheet name="primeicons/primeicons.css"
+		library="primefaces" />
+</h:head>
+
+<h:body>
+
+	<style type="text/css">
+* {
+	font-size: 13px;
+}
+
+.col-small {
+	width: 65px;
+	text-align: center;
+}
+</style>
+	<h:form id="frm">
+		<p:menubar>
+
+			<p:submenu label="Administracion">
+				<p:menuitem value="Lotes" icon="pi pi-file"
+					action="gestionlotes.xhtml?faces-redirect=true" ajax="false">
+				</p:menuitem>
+
+				<p:menuitem value="Usuarios" icon="pi pi-users"
+					action="usuarios.xhtml" ajax="false" />
+			</p:submenu>
+
+
+			<p:menuitem value="Estados de cuenta" icon="pi pi-file"
+				action="estadosDeCuenta.xhtml" ajax="false" />
+
+
+			<p:menuitem value="Carga de data" icon="pi pi-file-o" />
+
+			<f:facet name="options">
+				<p:commandButton type="button" value="Cerrar sesion"
+					icon="pi pi-home" />
+			</f:facet>
+		</p:menubar>
+
+		<p:panel>
+
+
+			<p:panel style="background:#c8d6bf">
+				<h:outputText value="GESTION DE LOTES"
+					style="font-weight:bold; font-size: 18px; color:white;"></h:outputText>
+			</p:panel>
+
+			<p:growl id="msj" life="9000" showDetail="true">
+				<p:autoUpdate></p:autoUpdate>
+			</p:growl>
+
+			<br />
+			<br />
+
+			<h:outputText value="TOTAL DE LOTES REGISTRADOS: "></h:outputText>
+			<p:spacer width="10" />
+			<h:outputText value="#{lotesMB.totalLotesRegistrados}"
+				style="font-weight:bold; font-size:18px;"></h:outputText>
+
+			<br />
+			<br />
+
+			<p:dataTable emptyMessage="No hay lotes registrados" id="dtlotes"
+				value="#{lotesMB.listaLotes}" var="var" rowIndexVar="index">
+
+				<p:column headerText="No." styleClass="col-small">
+					<h:outputText value="#{index+1}"></h:outputText>
+				</p:column>
+
+				<p:column headerText="Poligono">
+					<h:outputText value="#{var.lotePoligono}"></h:outputText>
+				</p:column>
+
+				<p:column headerText="Numero lote">
+					<h:outputText value="#{var.loteNumero}"></h:outputText>
+				</p:column>
+
+				<p:column headerText="Estado">
+					<h:outputText
+						value="#{var.loteEstado.equals('D')?'Disponible':
+					var.loteEstado.equals('V')?'Vendido':
+					var.loteEstado.equals('R')?'Reservado':var.loteEstado}"></h:outputText>
+				</p:column>
+
+
+				<p:column headerText="Precio Contado">
+					<h:outputText value="#{var.lotePrecioContado}"></h:outputText>
+				</p:column>
+
+				<p:column headerText="Metros Cuadrados">
+					<h:outputText value="#{var.loteMetrosCuadrados}"></h:outputText>
+				</p:column>
+
+			</p:dataTable>
+
+			<br />
+			<br />
+
+			<p:commandButton value="Agregar nuevo lote"
+				actionListener="#{lotesMB.mostrarPanelNuevoLote}" update=":frm"
+				icon="pi pi-plus" iconPos="left">
+			</p:commandButton>
+
+			<br />
+			<br />
+
+
+			<p:panel id="panelnewlote" rendered="#{lotesMB.renderPanelNuevoLote}">
+
+				<p:panel style="background:#c8d6bf">
+					<h:outputText value="REGISTRO DE NUEVOS LOTES "
+						style="font-weight:bold; font-size: 18px; color:white;"></h:outputText>
+
+				</p:panel>
+
+				<br />
+
+
+				<h:outputText
+					value="Tasa de interes a utilizar para el calculo de las cuotas: " />
+				<p:spacer width="10" />
+				<p:inputText value="#{lotesMB.tasaInteresPrestamo}"
+					style="font-weight:bold; font-size:16px; background:#F8F8F8; text-align:center;"
+					maxlength="4" size="4" readonly="true" />
+				<h:outputText value=" % " style="font-weight:bold; font-size:16px;"></h:outputText>
+				<br />
+				<br />
+
+				<p:panelGrid columns="4" layout="grid"
+					styleClass="ui-panelgrid-blank" style="width:100%"
+					columnClasses="ui-grid-col-3, ui-grid-col-3, ui-grid-col-3, ui-grid-col-3">
+
+					<p:outputPanel>
+						<h:outputText value="Poligono" />
+						<br />
+						<p:inputText value="#{lotesMB.nuevoLote.lotePoligono}"
+							maxlength="1" style="width:100%"></p:inputText>
+					</p:outputPanel>
+
+					<p:outputPanel>
+						<h:outputText value="Numero lote" />
+						<br />
+						<p:inputText value="#{lotesMB.nuevoLote.loteNumero}" maxlength="4"
+							style="width:100%"></p:inputText>
+					</p:outputPanel>
+
+					<p:outputPanel>
+						<h:outputText value="Numero matricula" />
+						<br />
+						<p:inputText value="#{lotesMB.nuevoLote.loteNumeroMatricula}"
+							style="width:100%"></p:inputText>
+					</p:outputPanel>
+
+					<p:outputPanel />
+
+					<h:outputText value="LONGITUDES"
+						style="font-weight:bold; font-size:16px;" />
+
+					<p:outputPanel />
+					<p:outputPanel />
+					<p:outputPanel />
+
+					<p:outputPanel>
+						<h:outputText value="Culata recta" />
+						<br />
+						<p:inputText value="#{lotesMB.nuevoLote.loteCulataRecta}"
+							style="width:100%"></p:inputText>
+					</p:outputPanel>
+
+					<p:outputPanel />
+					<p:outputPanel />
+					<p:outputPanel />
+
+
+
+					<p:outputPanel>
+						<h:outputText value="Norte" />
+						<br />
+						<p:inputText value="#{lotesMB.nuevoLote.loteNorte}"
+							style="width:100%"></p:inputText>
+					</p:outputPanel>
+
+					<p:outputPanel>
+						<h:outputText value="Sur" />
+						<br />
+						<p:inputText value="#{lotesMB.nuevoLote.loteSur}"
+							style="width:100%"></p:inputText>
+					</p:outputPanel>
+
+					<p:outputPanel>
+						<h:outputText value="Oriente" />
+						<br />
+						<p:inputText value="#{lotesMB.nuevoLote.loteOriente}"
+							style="width:100%"></p:inputText>
+					</p:outputPanel>
+
+					<p:outputPanel>
+						<h:outputText value="Poniente" />
+						<br />
+						<p:inputText value="#{lotesMB.nuevoLote.lotePoniente}"
+							style="width:100%"></p:inputText>
+					</p:outputPanel>
+
+
+					<p:outputPanel>
+						<h:outputText value="Metros Cuadrados" />
+						<br />
+						<p:inputText value="#{lotesMB.nuevoLote.loteMetrosCuadrados}"
+							style="width:100%">
+							<p:ajax event="blur" listener="#{lotesMB.calcularVarasCuadradas}"
+								update="varascuadradas"></p:ajax>
+						</p:inputText>
+					</p:outputPanel>
+
+					<p:outputPanel>
+						<h:outputText value="Varas cuadradas" />
+						<br />
+						<p:inputText value="#{lotesMB.nuevoLote.loteVarasCuadradas}"
+							maxlength="1" style="width:100%; background:#F8F8F8;"
+							readonly="true" id="varascuadradas" />
+					</p:outputPanel>
+
+					<p:outputPanel>
+						<h:outputText value="Precio vara cuadrada ($)" />
+						<br />
+						<p:inputText value="#{lotesMB.nuevoLote.lotePrecioVaraCuadrada}"
+							style="width:100%;" id="preciovara">
+
+							<p:ajax event="blur" listener="#{lotesMB.calcularPrecioLote}"
+								update="preciolote"></p:ajax>
+
+						</p:inputText>
+					</p:outputPanel>
+
+					<p:outputPanel />
+
+
+					<p:outputPanel>
+						<h:outputText value="PRECIO CONTADO LOTE"
+							style="font-weight:bold;" />
+						<br />
+						<h:outputText value="#{lotesMB.nuevoLote.lotePrecioContado}"
+							style="width:100%; font-size:18px; font-weight:bold; "
+							id="preciolote">
+						</h:outputText>
+					</p:outputPanel>
+
+					<p:outputPanel />
+					<p:outputPanel />
+					<p:outputPanel />
+
+				</p:panelGrid>
+				<br />
+				<br />
+
+				<h:outputText value="CALCULO DE CUOTAS MENSUALES"
+					style="font-weight:bold; font-size:16px;" />
+
+				<br />
+				<br />
+
+
+				<p:panelGrid columns="4" layout="grid" style="width:100%"
+					columnClasses="ui-grid-col-3, ui-grid-col-3, ui-grid-col-3, ui-grid-col-3">
+
+					<h:outputText value="Plazo: 5 anios" style="font-weight:bold;" />
+
+
+					<p:outputPanel>
+						<h:outputText value="Valor cuota" />
+						<br />
+						<h:outputText></h:outputText>
+					</p:outputPanel>
+
+					<p:outputPanel>
+						<h:outputText value="Valor IVA generado" />
+						<br />
+						<h:outputText></h:outputText>
+					</p:outputPanel>
+
+					<p:outputPanel>
+						<h:outputText value="Valor cuota + IVA" />
+						<br />
+						<h:outputText></h:outputText>
+
+					</p:outputPanel>
+
+				</p:panelGrid>
+				<br />
+
+				<p:commandButton value="Agregar lote" icon="pi pi-check"
+					actionListener="#{lotesMB.agregarNuevoLote}" update=":frm"></p:commandButton>
+
+				<p:spacer width="10" />
+
+				<p:commandButton value="Cancelar" icon="pi pi-check"
+					actionListener="#{lotesMB.cancelAddLote}" update=":frm"
+					process="@this"
+					style="background:red; color:white; border-color:red;"></p:commandButton>
+			</p:panel>
+
+		</p:panel>
+	</h:form>
+
+</h:body>
+
+</html>
